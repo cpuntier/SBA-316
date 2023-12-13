@@ -6,21 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script defer src="index.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <h1> Fake Wordle!!!</h1>
-    <div>
+    <div class = "mainpage">
+        <h1> Fake Wordle!!!</h1>
+
         <h3> Choose your difficulty</h3>
         <div class="Difficulty_Select">
-            <input type="radio" name="difficulty" value = "5 Letters"><br>
-            <input type="radio" name="difficulty" value = "6 Letters"><br>
-            <input type="radio" name="difficulty" value = "7 Letters"><br>
+            <input type="radio" name="difficulty" value = "5" checked> 5 Letters<br>
+            <input type="radio" name="difficulty" value = "6"> 6 Letters<br>
+            <input type="radio" name="difficulty" value = "7"> 7 Letters<br>
         </div>
         <div>
             <button type="button" id = "gameStart"> Start Game</button>
         </div>
     </div>
+
+    <template id = "tileTemplate">
+        <div class = "tile">
+            <p></p>
+
+        </div>
+
+    </template>
 
 </body>
 
