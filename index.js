@@ -5,62 +5,42 @@ const mainpage = document.querySelector(".mainpage");
 
 // console.log(difficulty);
 // console.log(starter);
+const grid = document.createElement("div");
+let count = 0;
+let length = selectDifficulty()
 
 
-
+let answer = "hello";
 starter.addEventListener("click", startGame);
 
 function startGame() {
-    let count = 0;
     //console.log(difficulty);
     //    console.log(mainpage);
 
-    let length = selectDifficulty()
-    const grid = document.createElement("div");
 
     for (let i = 0; i < 5; i++) {
         grid.appendChild(createRow());
     }
-    mainpage.innerHTML = `<h3> GAME HAS STARTED</h3>
-    <div class = "gridHolder">
-    ${grid.innerHTML}
-    </div>
-    <input type="text" id="guess" required minlength="${length}" maxlength="${length}" size="10" />
-    <button id = "submit">Guess</button>
-    
-    `
-
-    const guessButton = document.getElementById("submit");
-    console.log(guessButton);
-    const guessInput = document.getElementById("guess");
-
-    guessButton.addEventListener("click", updateGrid);
 
 
+    updateMain();
+    // mainpage.innerHTML = `<h3> GAME HAS STARTED</h3>
+    // <div class = "gridHolder">
+    // ${grid.innerHTML}
+    // </div>
+    // <input type="text" id="guess" required minlength="${length}" maxlength="${length}" size="10" />
+    // <button id = "submit">Guess</button>
 
-    function updateGrid() {
+    // `
 
-        let currentNode = grid.childNodes[count].childNodes[0]
-        while (currentNode) {
-            if (currentNode) {
-                console.log(currentNode.nextSibling);
-                currentNode = currentNode.nextSibling;
-                if (currentNode.innerHTML) {
-                    console.log("Here?")
-                    currentNode.innerHTML = `<p>Change</p>`
-                }
-            }
-        }
-        updateGrid();
+    // const guessButton = document.getElementById("submit");
+    // console.log(guessButton);
+    // const guessInput = document.getElementById("guess");
 
-        // for(let i = 0;i < grid.childNodes[count].childNodes.length;i++){
-        //     console.log(currentNode[i].innerHTML);
-        //     if(currentNode[i].innerHTML){
-        //         currentNode[i].innerHTML = `<p>${guessInput.value[i]}</p>`
-        //     }
-        // }
-        //updateMain()
-    }
+    // guessButton.addEventListener("click", gridHandler);
+
+
+
 
 
     // function checkGuess(){
@@ -68,21 +48,10 @@ function startGame() {
     // }
 
 
-    function updateMain() {
-        mainpage.innerHTML = `<h3> GAME HAS STARTED</h3>
-        <div class = "gridHolder">
-        ${grid.innerHTML}
-        </div>
-        <input type="text" id="guess" required minlength="${length}" maxlength="${length}" size="10" />
-        <button id = "submit">Guess</button>
-    
-        
-        `
-
-    }
-
 
 }
+
+
 
 
 
@@ -125,4 +94,52 @@ function createRow(array = []) {
         }
     }
     return row;
+}
+
+function updateMain() {
+    mainpage.innerHTML = `<h3> GAME HAS STARTED</h3>
+    <div class = "gridHolder">
+    ${grid.innerHTML}
+    </div>
+    <input type="text" id="guess" required minlength="${length}" maxlength="${length}" size="10" />
+    <button id = "submit">Guess</button>        
+    `
+
+    const guessButton = document.getElementById("submit");
+    console.log(guessButton);
+    const guessInput = document.getElementById("guess");
+    guessButton.addEventListener("click", gridHandler);
+
+
+    function gridHandler() {
+        updateGrid(guessInput.value.split(""));
+    }
+
+
+}
+
+
+function updateGrid(guess) {
+    let index = 0;
+    let currentNode = grid.childNodes[count].childNodes[0];
+    while (currentNode) {
+        console.log("before update: ,", currentNode);
+        if (currentNode) {
+            if (currentNode.innerHTML) {
+                console.log("Here?")
+                currentNode.innerHTML = `<p>${guess[index]}</p>`;
+                if(guess[index] == answer[index]){
+                    currentNode.style.backgroundColor = "green";
+                }else if(answer.indexOf(guess[index])){
+                    currentNode.style.backgroundColor = 'yello';
+                
+                }
+                index = index + 1;
+            }
+            currentNode = currentNode.nextSibling;
+            console.log("after update:", currentNode);
+        }
+    }
+    updateMain();
+    count = count + 1;
 }
