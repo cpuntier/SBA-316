@@ -17,12 +17,23 @@
 } */
 
 .tile{
-    background-color: blue;
+    background-color: gray;
+    color : white;
     border: solid 1px black;
     width: 50px;
     height: 50px;
+    margin : 10px;
 }
 
 p{
     text-align: center;
 }
+
+.warning {
+    margin-top: 10px;
+    border: 2px solid #f39389;
+    border-radius: 5px;
+    padding: 5px 10px;
+    position: absolute;
+    background-color: #fbd8d4;
+}  
