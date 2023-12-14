@@ -8,10 +8,15 @@ let count = 0;
 
 starter.addEventListener("click", startGame);
 let answer = "";
+
+
 function startGame() {
+
+    //determining how long input guess should be
     let length = selectDifficulty();
     let randomIndex = Math.floor(Math.random() * length);
 
+    //choosing appropriate word bank based on difficulty chosen
     console.log(typeof (length));
     if (length === "5") {
         answer = fiveLetterWords[randomIndex];
@@ -24,23 +29,18 @@ function startGame() {
     //    console.log(mainpage);
 
 
+    ///creating grid based on difficulty
     for (let i = 0; i < 5; i++) {
         grid.appendChild(createRow());
     }
-    console.log(randomIndex);
-    console.log("this is answer,", answer);
 
+    //updating mainhtml to start game
     updateMain(answer.toUpperCase(), length, []);
 
 }
 
 
-
-
-
-selectDifficulty();
-
-
+//function written to get value of radio menu that was checked to choose difficulty
 function selectDifficulty() {
     let output;
     for (let i = 0; i < difficulty.length; i++) {
@@ -53,6 +53,8 @@ function selectDifficulty() {
     return output;
 }
 
+
+//uses template to create tiles used in grid.
 function createTile(text = "") {
     const fragment = document.getElementById("tileTemplate");
     const tileClone = fragment.content.cloneNode(true);
@@ -65,6 +67,9 @@ function createTile(text = "") {
 }
 
 
+
+//uses createTile to make "rows" for grid
+//divs are created and individual "tiles" are appended as children.
 function createRow(array = []) {
     const row = document.createElement("div");
     row.style.display = "flex";
@@ -79,10 +84,15 @@ function createRow(array = []) {
     return row;
 }
 
+
+//function that updates the maindiv's innerhtml
 function updateMain(answer, length, guess = []) {
 
-    console.log(guess.join(""), answer);
-    if (count === 5 && guess.join("") != answer) {
+    //controls main flow of the game
+
+    //    console.log(guess.join(""), answer);
+
+    if (count === 5 && guess.join("") != answer) { // if out of guesses and not correct plalyer loses
         console.log(answer, guess, count);
         console.log("You Lose!");
         alert(`You Lose! The word was ${answer}`);
@@ -94,7 +104,7 @@ function updateMain(answer, length, guess = []) {
         <h2>The answer was ${answer}</h2>
         `}
 
-    if (guess.join("") != answer) {
+    if (guess.join("") != answer) { // if not right guess, show appropriate grid with buttons where they need to be.
         mainpage.innerHTML = `<h3> GAME HAS STARTED</h3>
         <div class = "gridHolder">
         ${grid.innerHTML}
@@ -108,25 +118,27 @@ function updateMain(answer, length, guess = []) {
         const guessInput = document.getElementById("guess");
         guessButton.addEventListener("click", gridHandler);
 
+        //creating warning dialog if user enters not long enough string
         let warningTimeout;
         const warningBox = document.createElement("div");
         warningBox.className = "warning";
 
-        function displayWarning(msg){
+        //function to display warning should string not be long enough
+        //adopted from notes in slides.
+        function displayWarning(msg) {
             warningBox.innerHTML = msg;
-            if(document.body.contains(warningBox)){
+            if (document.body.contains(warningBox)) {
                 clearTimeout(warningTimeout);
-            }else{
-                guessInput.parentNode.insertBefore(warningBox,guessInput.nextSibling);
+            } else {
+                guessInput.parentNode.insertBefore(warningBox, guessInput.nextSibling);
             }
 
             warningTimeout = setTimeout(() => {
                 warningBox.parentNode.removeChild(warningBox);
                 warningTimeout = -1;
-            },2000)
+            }, 2000)
 
         }
-
 
 
         function gridHandler() {
