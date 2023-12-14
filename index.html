@@ -10,22 +10,32 @@
 </head>
 
 <body>
-    <div class = "mainpage">
-        <h1> Fake Wordle!!!</h1>
+    <div class="mainpage">
+        <h1> Chris Wordle!!!</h1>
 
         <h3> Choose your difficulty</h3>
         <div class="Difficulty_Select">
-            <input type="radio" name="difficulty" value = "5"  required = "required"> 5 Letters<br>
-            <input type="radio" name="difficulty" value = "6"> 6 Letters<br>
-            <input type="radio" name="difficulty" value = "7"> 7 Letters<br>
+            <input type="radio" name="difficulty" value="5" required checked> 5 Letters<br>
+            <input type="radio" name="difficulty" value="6"> 6 Letters<br>
+            <input type="radio" name="difficulty" value="7"> 7 Letters<br>
+            <button type="submit" id="gameStart"> Start Game</button>
+
         </div>
         <div>
-            <button type="button" id = "gameStart"> Start Game</button>
+
         </div>
+        <div class=rules>
+            <div class="tile" style = "background-color: orange;">
+            </div>
+            <br>
+            This color means that there is at least one of this letter in the target word
+            <div class="tile" style = "background-color: green;"></div><br> This color means that letter  is in the right position
+        </div>
+
     </div>
 
-    <template id = "tileTemplate">
-        <div class = "tile">
+    <template id="tileTemplate">
+        <div class="tile">
             <p></p>
 
         </div>

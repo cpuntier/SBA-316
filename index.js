@@ -1,12 +1,13 @@
+//obtain document elements needed immediately
+
 const starter = document.getElementById("gameStart");
 const difficulty = document.querySelectorAll(".Difficulty_Select input");
 const mainpage = document.querySelector(".mainpage");
 
-
 const grid = document.createElement("div");
-let count = 0;
+let count = 0; // represents number of guesses
 
-starter.addEventListener("click", startGame);
+starter.addEventListener("click", startGame); 
 let answer = "";
 
 
@@ -14,24 +15,32 @@ function startGame() {
 
     //determining how long input guess should be
     let length = selectDifficulty();
-    let randomIndex = Math.floor(Math.random() * length);
 
     //choosing appropriate word bank based on difficulty chosen
     console.log(typeof (length));
     if (length === "5") {
+        let randomIndex = Math.floor(Math.random() * fiveLetterWords.length);
         answer = fiveLetterWords[randomIndex];
+        console.log(randomIndex);
+
     } else if (length === "6") {
+        let randomIndex = Math.floor(Math.random() * sixLetterWords.length);
         answer = sixLetterWords[randomIndex];
+        console.log(randomIndex);
+
     } else if (length === "7") {
+        let randomIndex = Math.floor(Math.random() * sevenLetterWords.length);
         answer = sevenLetterWords[randomIndex];
+        console.log(randomIndex);
+
     }
     //console.log(difficulty);
     //    console.log(mainpage);
 
 
     ///creating grid based on difficulty
-    for (let i = 0; i < 5; i++) {
-        grid.appendChild(createRow());
+    for (let i = 0; i < 6; i++) {
+        grid.appendChild(createRow(length));
     }
 
     //updating mainhtml to start game
@@ -55,14 +64,10 @@ function selectDifficulty() {
 
 
 //uses template to create tiles used in grid.
-function createTile(text = "") {
+function createTile() {
     const fragment = document.getElementById("tileTemplate");
     const tileClone = fragment.content.cloneNode(true);
     const body = tileClone.querySelector(".tile p");
-    // console.log(tileClone);
-    // console.log(body);
-    body.innerHTML = text;
-
     return tileClone;
 }
 
@@ -70,16 +75,12 @@ function createTile(text = "") {
 
 //uses createTile to make "rows" for grid
 //divs are created and individual "tiles" are appended as children.
-function createRow(array = []) {
+function createRow(length) {
     const row = document.createElement("div");
     row.style.display = "flex";
     row.style.flexDirection = "row";
-    for (i = 0; i < selectDifficulty(); i++) {
-        if (array.length) {
-            row.appendChild(createTile())
-        } else {
-            row.appendChild(createTile(array[i]));
-        }
+    for (i = 0; i < length; i++) {
+            row.appendChild(createTile());
     }
     return row;
 }
@@ -92,7 +93,8 @@ function updateMain(answer, length, guess = []) {
 
     //    console.log(guess.join(""), answer);
 
-    if (count === 5 && guess.join("") != answer) { // if out of guesses and not correct plalyer loses
+    if (count === 6 && guess.join("") != answer) { // if out of guesses and not correct player loses
+        //user has lost . stop the game and let them know the answer
         console.log(answer, guess, count);
         console.log("You Lose!");
         alert(`You Lose! The word was ${answer}`);
@@ -102,9 +104,22 @@ function updateMain(answer, length, guess = []) {
         </div>
         <h1>"You LOSE!"</h1>
         <h2>The answer was ${answer}</h2>
-        `}
+        <button id = "reload">Play Again? </button>
+        `
+        //button is added to allow the user to refresh the page.
+        const reload = document.getElementById("reload");
+        reload.addEventListener("click", reloadFunction);
+
+        function reloadFunction(){
+            window.location.reload();
+        }
+
+
+        return;
+    }
 
     if (guess.join("") != answer) { // if not right guess, show appropriate grid with buttons where they need to be.
+        //at this point the user is still playing the game
         mainpage.innerHTML = `<h3> GAME HAS STARTED</h3>
         <div class = "gridHolder">
         ${grid.innerHTML}
@@ -142,7 +157,7 @@ function updateMain(answer, length, guess = []) {
 
 
         function gridHandler() {
-
+            //handler used to display warning if guess isnt right length
             if (guessInput.value.length != length) {
                 displayWarning(`Guess entered must be the same length as the difficulty chosen (${length})`)
 
@@ -153,6 +168,7 @@ function updateMain(answer, length, guess = []) {
 
     }
     else {
+        //user has won. display message of winning
         console.log("You win!");
         alert("You win!")
         mainpage.innerHTML = `<h3> GAME HAS ENDED</h3>
@@ -165,23 +181,23 @@ function updateMain(answer, length, guess = []) {
     }
     return;
 
-
 }
 
 
 function updateGrid(answer, length, guess) {
+    ///When the user guess navigate through nodes and update html values to present letters
     let index = 0;
     let currentNode = grid.childNodes[count].childNodes[0];
-    while (currentNode) {
+    while (currentNode) { // use while loop to traverse through nodes
         console.log("before update: ,", currentNode);
         if (currentNode) {
             if (currentNode.innerHTML) {
-                console.log("Here?")
-                currentNode.innerHTML = `<p>${guess[index]}</p>`;
+//                console.log("Here?")
+                currentNode.innerHTML = `<p>${guess[index]}</p>`;//set guess in appropriate position
                 if (guess[index] == answer[index]) {
-                    currentNode.style.backgroundColor = "green";
+                    currentNode.style.backgroundColor = "green"; // green if right
                 } else if (answer.indexOf(guess[index]) >= 0) {
-                    currentNode.style.backgroundColor = 'orange';
+                    currentNode.style.backgroundColor = 'orange'; // orange is in word but wrong place
 
                 }
                 index = index + 1;
@@ -190,7 +206,7 @@ function updateGrid(answer, length, guess) {
             console.log("after update:", currentNode);
         }
     }
-    count = count + 1;
+    count = count + 1; // update number of guesses 
     updateMain(answer.toUpperCase(), length, guess);
 }
 
@@ -248,7 +264,7 @@ const sevenLetterWords = [
     'journey', 'hydrate', 'justice', 'liberty', 'mission',
     'nominee', 'perfect', 'qualify', 'upgrade', 'weather',
     'declare', 'whisper', 'balance', 'cluster', 'diamond',
-    'fashion', 'morning', 'neutral', 'organize', 'popular',
+    'fashion', 'morning', 'neutral', 'popular',
     'quality', 'reserve', 'satisfy', 'against', 'biology',
     'element', 'healthy', 'journal', 'observe', 'reflect',
     'society', 'gravity', 'history', 'install', 'capture',
